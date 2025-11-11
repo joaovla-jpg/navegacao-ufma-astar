@@ -284,4 +284,4 @@ Este projeto foi desenvolvido para fins educacionais como parte da avaliação d
 
 ---
 
-**🎓 Desenvolvido com dedicação para a disciplina de IA - UFMA 2024**
+**🎓 Desenvolvido com dedicação para a disciplina de IA - UFMA 2025**
