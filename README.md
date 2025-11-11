@@ -1,168 +1,208 @@
 # 🎓 Sistema de Navegação Campus UFMA - Algoritmo A*
 
+## 👥 Autores
+
+- **Yann Cristhyan Carvalho Pinheiro** - Matrícula: 2020010563
+- **Jônathas Silva Oliveira** - Matrícula: 2021024590
+- **João Victor Lima Azevedo** - Matrícula: 2022021127
+
+**Curso**: BICT - Bacharelado Interdisciplinar em Ciência e Tecnologia  
+**Instituição**: UFMA - Universidade Federal do Maranhão  
+**Disciplina**: Inteligência Artificial  
+**Professor**: Prof. Dr. Alex Oliveira Barradas Filho
+
+---
+
 ## 📋 Descrição do Projeto
 
-Este projeto implementa um sistema de navegação inteligente para o **Campus UFMA Bacanga** e pontos importantes de **São Luís/MA**, utilizando o algoritmo de busca informada **A*** (A-estrela).
+Sistema de navegação inteligente para o **Campus UFMA Bacanga** que utiliza o algoritmo de busca informada **A*** (A-estrela) para encontrar o caminho mais curto entre dois pontos do campus.
 
 ### 🎯 Objetivo
 
-Modelar o problema de navegação como um grafo e encontrar o **caminho mais curto** entre dois pontos, considerando:
-- Localizações reais do campus UFMA
-- Distâncias aproximadas entre os prédios
-- Pontos externos relevantes (Shopping da Ilha, Aeroporto, Praias, etc.)
+Modelar o problema de navegação no campus como um grafo e implementar o algoritmo A* usando a biblioteca NetworkX do Python, demonstrando conceitos fundamentais de Inteligência Artificial aplicados a um cenário real.
 
-### 🧠 Conceitos de IA Aplicados
+---
 
-**Busca Informada (A*)**:
-- **Estado**: Localização atual no campus/cidade
-- **Ações**: Mover para localizações adjacentes
-- **Função de Custo g(n)**: Distância real percorrida (em metros)
-- **Heurística h(n)**: Distância euclidiana até o destino
-- **Função de Avaliação f(n) = g(n) + h(n)**: Prioriza nós mais promissores
+## 🧠 Conceitos de IA Implementados
 
-**Por que A*?**
+### Algoritmo A* (A-estrela)
+
+O A* é um algoritmo de busca informada que combina:
+
+- **g(n)**: Custo real do caminho do início até o nó atual
+- **h(n)**: Heurística (estimativa) do nó atual até o objetivo
+- **f(n) = g(n) + h(n)**: Função de avaliação total
+
+**Características**:
 - ✅ **Completo**: Sempre encontra uma solução se ela existir
 - ✅ **Ótimo**: Encontra o caminho de menor custo
 - ✅ **Eficiente**: Usa heurística para guiar a busca
 - ✅ **Admissível**: A heurística nunca superestima o custo real
 
----
+### Heurística Utilizada
 
-## 📍 Localizações Implementadas
+**Distância Euclidiana**: Calculada como a distância em linha reta entre dois pontos.
 
-### Campus UFMA Bacanga
-- **Portarias**: Principal, Fundos
-- **Administrativo**: Reitoria, PROEN
-- **Ensino**: BICT, CCET, CCH, CCBS, CCSo
-- **Estudo**: Biblioteca Central, Sala de Estudo BICT
-- **Alimentação**: RU, Cantina Central, Lanchonete CCET
-- **Esporte**: Ginásio Castelinho, Quadras Esportivas, Praça da Cidadania
+```python
+h(n) = √[(x2 - x1)² + (y2 - y1)²]
+```
 
-### Pontos Externos
-- Terminal Cohab
-- Shopping da Ilha
-- Lagoa da Jansen
-- Praia do Calhau
-- Centro Histórico
-- Aeroporto
+Esta heurística é **admissível** pois a distância em linha reta nunca é maior que a distância real no grafo.
 
 ---
 
-## 🚀 Como Rodar o Projeto
+## 📍 Localizações do Campus
+
+O sistema modela 20 localizações do Campus UFMA Bacanga:
+
+### Portarias
+- Portaria Principal
+- Portaria Fundos
+
+### Administrativo
+- Reitoria
+- PROEN
+
+### Centros de Ensino
+- BICT (Bacharelado Interdisciplinar)
+- CCET (Centro de Ciências Exatas e Tecnologia)
+- CCH (Centro de Ciências Humanas)
+- CCBS (Centro de Ciências Biológicas e da Saúde)
+- CCSo (Centro de Ciências Sociais)
+- Prédio Paulo Freire
+- Prédio de Educação Física
+
+### Estudo
+- Biblioteca Central
+- Sala de Estudo BICT
+
+### Alimentação
+- Restaurante Universitário (RU)
+- Cantina Central
+- Lanchonete CCET
+
+### Esporte e Lazer
+- Ginásio Castelinho
+- Quadras Esportivas
+- Praça da Cidadania
+
+---
+
+## 🚀 Como Executar
 
 ### Pré-requisitos
 
 - Python 3.8 ou superior
-- pip (gerenciador de pacotes Python)
+- pip (gerenciador de pacotes)
 
-### Passo 1: Clonar/Baixar o Projeto
-
-Se estiver no GitHub:
-```bash
-git clone https://github.com/seu-usuario/navegacao-ufma-astar.git
-cd navegacao-ufma-astar
-```
-
-Se baixou o arquivo compactado:
-```bash
-unzip navegacao-ufma-astar.zip
-cd navegacao-ufma-astar
-```
-
-### Passo 2: Criar Ambiente Virtual (Recomendado)
-
-```bash
-# Linux/Mac
-python3 -m venv venv
-source venv/bin/activate
-
-# Windows
-python -m venv venv
-venv\Scripts\activate
-```
-
-### Passo 3: Instalar Dependências
+### Passo 1: Instalar Dependências
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### Passo 4: Executar o Programa
+### Passo 2: Executar o Programa
 
+**Opção A: Exemplos Automáticos**
 ```bash
 python navegacao_ufma.py
 ```
+Executa 4 exemplos pré-definidos e gera mapas automaticamente.
 
-### 📊 Saída Esperada
+**Opção B: Modo Interativo**
+```bash
+python exemplo_interativo.py
+```
+Interface interativa para testar rotas personalizadas.
 
-O programa irá:
-1. Listar todos os locais disponíveis
-2. Executar 4 exemplos de navegação
-3. Mostrar rotas detalhadas com distâncias
-4. Gerar visualizações gráficas do mapa
-5. Salvar o mapa em PNG
+**Opção C: Executar Testes**
+```bash
+python testes.py
+```
+Valida o funcionamento do sistema (deve mostrar 100% de sucesso).
 
 ---
 
-## 💻 Estrutura do Código
-
-```
-navegacao-ufma-astar/
-│
-├── navegacao_ufma.py      # Código principal
-├── requirements.txt        # Dependências
-├── README.md              # Este arquivo
-└── outputs/               # Mapas gerados (criado automaticamente)
-    └── mapa_navegacao_ufma.png
-```
-
-### Classes Principais
-
-#### `NavegacaoCampusUFMA`
-
-**Métodos principais**:
-
-```python
-__init__()                    # Inicializa o grafo
-_criar_mapa_campus()         # Define locais e conexões
-heuristica(no, objetivo)     # Calcula distância euclidiana
-a_estrela(inicio, objetivo)  # Implementa busca A*
-visualizar_mapa(caminho)     # Gera visualização
-listar_locais()              # Lista todos os pontos
-comparar_rotas(inicio, destinos)  # Compara múltiplas rotas
-```
-
----
-
-## 🔬 Exemplos de Uso
+## 📊 Exemplos de Uso
 
 ### Exemplo 1: Rota Simples
+
 ```python
+from navegacao_ufma import NavegacaoCampusUFMA
+
 nav = NavegacaoCampusUFMA()
-caminho, custo, stats = nav.a_estrela('Portaria Principal', 'BICT')
+caminho, custo, stats = nav.buscar_caminho('Portaria Principal', 'BICT')
 ```
 
 **Saída**:
 ```
-🎯 ROTA ENCONTRADA: Portaria Principal → BICT
-📍 Caminho (2 locais):
-   1. Portaria Principal
-      ↓ 350m
-   2. BICT ✓
+Rota encontrada: Portaria Principal → BICT
+Caminho (5 pontos):
+  1. Portaria Principal
+     ↓ 200m
+  2. Reitoria
+     ↓ 180m
+  3. CCBS
+     ↓ 120m
+  4. CCH
+     ↓ 120m
+  5. BICT ✓
 
-📏 Distância total: 350 metros (0.35 km)
+📏 Distância total: 620 metros
+⏱️  Tempo estimado: ~7 minutos a pé
 ```
 
-### Exemplo 2: Rota Complexa
+### Exemplo 2: Comparar Rotas
+
 ```python
-caminho, custo, stats = nav.a_estrela('BICT', 'Aeroporto')
+nav.comparar_rotas('BICT', [
+    'Biblioteca Central',
+    'Restaurante Universitário',
+    'Ginásio Castelinho'
+])
 ```
 
-**Saída**: Mostra caminho com múltiplas paradas
+---
 
-### Exemplo 3: Comparação de Rotas
-```python
-nav.comparar_rotas('BICT', ['RU', 'Biblioteca Central', 'CCET'])
+## 🗺️ Visualizações
+
+O sistema gera mapas automáticos mostrando:
+- **Nós em azul**: Locais do campus
+- **Nó verde (quadrado)**: Ponto de partida
+- **Nó vermelho (quadrado)**: Destino
+- **Nós laranja**: Pontos intermediários do caminho
+- **Linha vermelha grossa**: Caminho encontrado pelo A*
+- **Distâncias**: Mostradas em metros nas arestas
+
+Os mapas são salvos automaticamente na pasta `outputs/`.
+
+---
+
+## 📁 Estrutura do Projeto
+
+```
+navegacao-ufma-astar/
+├── navegacao_ufma.py          # Código principal
+├── exemplo_interativo.py       # Interface interativa
+├── testes.py                   # Suite de testes
+├── requirements.txt            # Dependências
+├── README.md                   # Este arquivo
+└── outputs/                    # Mapas gerados (criado automaticamente)
+```
+
+---
+
+## 🧪 Validação
+
+O sistema foi testado e validado com:
+- ✅ 5 testes automatizados
+- ✅ 100% de taxa de sucesso
+- ✅ Verificação de otimalidade do A*
+- ✅ Validação de rotas importantes do campus
+
+Para executar os testes:
+```bash
+python testes.py
 ```
 
 ---
@@ -171,17 +211,17 @@ nav.comparar_rotas('BICT', ['RU', 'Biblioteca Central', 'CCET'])
 
 ### Complexidade
 
-- **Temporal**: O(b^d) no pior caso, mas muito melhor na prática
-  - b = fator de ramificação (média de 3-4 conexões por nó)
+- **Temporal**: O(b^d) no pior caso, mas otimizado pela heurística
+  - b = fator de ramificação (~3-4 conexões por nó)
   - d = profundidade da solução
   
-- **Espacial**: O(b^d) - precisa manter nós na memória
+- **Espacial**: O(b^d) - armazena nós na memória
 
 ### Otimalidade
 
-O algoritmo A* é **ótimo** porque:
+O A* garante encontrar o caminho ótimo porque:
 1. A heurística é **admissível** (nunca superestima)
-2. A heurística é **consistente** (satisfaz a desigualdade triangular)
+2. A heurística é **consistente** (satisfaz desigualdade triangular)
 3. Distância euclidiana ≤ Distância real no grafo
 
 ---
@@ -190,46 +230,33 @@ O algoritmo A* é **ótimo** porque:
 
 [Link para vídeo no YouTube - até 5 minutos]
 
-**Conteúdo do vídeo**:
-1. Apresentação do problema (navegação no campus)
+### Conteúdo do Vídeo
+1. Apresentação do problema de navegação no campus
 2. Modelagem como grafo (nós = locais, arestas = caminhos)
-3. Implementação do A* no código
-4. Demonstração executando 3-4 exemplos
-5. Análise dos resultados
-6. Limitações e melhorias futuras
+3. Explicação do algoritmo A*
+4. Demonstração do código em execução
+5. Análise dos resultados obtidos
+6. Limitações e possíveis melhorias
 
 ---
 
 ## ⚠️ Limitações
 
-1. **Distâncias Aproximadas**: Os valores são estimativas, não medições precisas
+1. **Distâncias Aproximadas**: Baseadas em estimativas, não medições precisas
 2. **Grafo Estático**: Não considera obstáculos temporários ou obras
-3. **Sem Informações de Trânsito**: Não leva em conta horários de pico
+3. **Ambiente 2D**: Não considera diferenças de elevação
 4. **Caminhos Pedestres**: Modelo focado em trajetos a pé
-5. **Simplificação 2D**: Não considera diferenças de elevação
 
 ---
 
-## 🚀 Próximos Passos
+## 🔮 Melhorias Futuras
 
-### Melhorias Técnicas
-- [ ] Adicionar mais locais do campus
-- [ ] Integrar com Google Maps API para distâncias reais
+- [ ] Integrar com Google Maps para distâncias reais
+- [ ] Adicionar modos de transporte (bicicleta, ônibus interno)
+- [ ] Considerar horários de funcionamento dos locais
 - [ ] Implementar rotas alternativas
-- [ ] Adicionar estimativa de tempo considerando meio de transporte
 - [ ] Interface web interativa
-
-### Funcionalidades
-- [ ] Modo "evitar escadas" (acessibilidade)
-- [ ] Rotas com pontos de interesse (ex: passar pela biblioteca)
-- [ ] Horários de funcionamento dos locais
-- [ ] Integração com horários de ônibus
-- [ ] App mobile
-
-### Algoritmos Alternativos
-- [ ] Comparar com Dijkstra (busca sem informação)
-- [ ] Implementar Busca Gulosa
-- [ ] Testar IDA* (economia de memória)
+- [ ] Modo de acessibilidade (evitar escadas)
 
 ---
 
@@ -237,55 +264,24 @@ O algoritmo A* é **ótimo** porque:
 
 1. **Russell, S., & Norvig, P.** (2020). *Artificial Intelligence: A Modern Approach* (4th ed.). Pearson.
    - Capítulo 3: Solving Problems by Searching
-   - Seção 3.5: Informed (Heuristic) Search Strategies
+   - Seção 3.5: Informed Search Strategies
 
 2. **Hart, P. E., Nilsson, N. J., & Raphael, B.** (1968). *A Formal Basis for the Heuristic Determination of Minimum Cost Paths*. IEEE Transactions on Systems Science and Cybernetics.
 
 3. **NetworkX Documentation**: https://networkx.org/documentation/stable/
 
-4. **Material da Disciplina**: Prof. Dr. Alex Oliveira Barradas Filho - BICT/UFMA
+---
+
+## 📞 Contato
+
+Para dúvidas ou sugestões sobre o projeto, entre em contato com os autores através dos canais institucionais da UFMA.
 
 ---
 
-## 👨‍💻 Autor
+## 📄 Licença
 
-**Estudante do BICT - Bacharelado Interdisciplinar em Ciência e Tecnologia**  
-Universidade Federal do Maranhão (UFMA)  
-Disciplina: Inteligência Artificial  
-Prof. Dr. Alex Oliveira Barradas Filho
+Este projeto foi desenvolvido para fins educacionais como parte da avaliação da disciplina de Inteligência Artificial da UFMA.
 
 ---
 
-## 📝 Licença
-
-Este projeto foi desenvolvido para fins educacionais como parte da avaliação da disciplina de Inteligência Artificial.
-
----
-
-## 🤝 Contribuições
-
-Sugestões e melhorias são bem-vindas! Sinta-se à vontade para:
-- Reportar bugs
-- Sugerir novos locais
-- Propor melhorias no algoritmo
-- Corrigir distâncias
-
----
-
-## ❓ FAQ
-
-**P: Por que A* e não Dijkstra?**  
-R: A* é mais eficiente que Dijkstra pois usa heurística para guiar a busca, explorando menos nós.
-
-**P: A heurística pode ser melhorada?**  
-R: Sim! Poderíamos usar distância de Manhattan ou considerar barreiras físicas reais do campus.
-
-**P: Como adicionar novos locais?**  
-R: Edite o método `_criar_mapa_campus()` adicionando o local em `locais` e suas conexões em `caminhos`.
-
-**P: Funciona offline?**  
-R: Sim! Todo o grafo está hard-coded, não precisa de internet.
-
----
-
-**🎓 Feito com dedicação para a disciplina de IA - UFMA 2024**
+**🎓 Desenvolvido com dedicação para a disciplina de IA - UFMA 2024**
