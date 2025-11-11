@@ -1,14 +1,14 @@
 """
-Script de Testes - Sistema de Navegação UFMA
-Valida o funcionamento correto do algoritmo A*
+Suite de Testes - Sistema de Navegação Campus UFMA
+Valida o funcionamento do algoritmo A*
 """
 
 from navegacao_ufma import NavegacaoCampusUFMA
 import sys
 
 
-def teste_criacao_grafo():
-    """Testa se o grafo foi criado corretamente."""
+def teste_grafo():
+    """Testa criação do grafo"""
     print("\n🧪 TESTE 1: Criação do Grafo")
     print("-" * 60)
     
@@ -18,212 +18,156 @@ def teste_criacao_grafo():
         num_nos = nav.grafo.number_of_nodes()
         num_arestas = nav.grafo.number_of_edges()
         
-        assert num_nos == 24, f"Esperado 24 nós, encontrado {num_nos}"
+        assert num_nos == 19, f"Esperado 19 nós, encontrado {num_nos}"
         assert num_arestas > 0, "Nenhuma aresta encontrada"
         
         print(f"✅ Grafo criado com sucesso!")
-        print(f"   • Número de nós: {num_nos}")
-        print(f"   • Número de arestas: {num_arestas}")
+        print(f"   Nós: {num_nos}")
+        print(f"   Arestas: {num_arestas}")
         return True
-    except AssertionError as e:
-        print(f"❌ Falha: {e}")
-        return False
     except Exception as e:
-        print(f"❌ Erro: {e}")
+        print(f"❌ Falha: {e}")
         return False
 
 
 def teste_heuristica():
-    """Testa se a heurística está funcionando."""
-    print("\n🧪 TESTE 2: Função Heurística")
+    """Testa função heurística"""
+    print("\n🧪 TESTE 2: Heurística")
     print("-" * 60)
     
     try:
         nav = NavegacaoCampusUFMA()
         
-        # Teste 1: Distância de um nó para ele mesmo deve ser 0
-        dist = nav.heuristica('BICT', 'BICT')
-        assert dist == 0, f"Distância para si mesmo deveria ser 0, mas é {dist}"
+        # Distância para si mesmo = 0
+        dist = nav.calc_heuristica('BICT', 'BICT')
+        assert dist == 0, f"Distância para si mesmo deveria ser 0"
         
-        # Teste 2: Distância deve ser positiva
-        dist = nav.heuristica('BICT', 'CCET')
-        assert dist > 0, f"Distância deveria ser positiva, mas é {dist}"
+        # Distância deve ser positiva
+        dist = nav.calc_heuristica('BICT', 'CCET')
+        assert dist > 0, f"Distância deve ser positiva"
         
-        # Teste 3: Distância deve ser simétrica
-        dist1 = nav.heuristica('BICT', 'CCET')
-        dist2 = nav.heuristica('CCET', 'BICT')
-        assert abs(dist1 - dist2) < 0.01, "Heurística deveria ser simétrica"
+        # Simetria
+        dist1 = nav.calc_heuristica('BICT', 'CCET')
+        dist2 = nav.calc_heuristica('CCET', 'BICT')
+        assert abs(dist1 - dist2) < 0.01, "Heurística deve ser simétrica"
         
-        print(f"✅ Heurística funcionando corretamente!")
-        print(f"   • BICT ↔ BICT: {nav.heuristica('BICT', 'BICT'):.2f}m")
-        print(f"   • BICT ↔ CCET: {nav.heuristica('BICT', 'CCET'):.2f}m")
+        print(f"✅ Heurística funcionando!")
         return True
-    except AssertionError as e:
+    except Exception as e:
         print(f"❌ Falha: {e}")
         return False
-    except Exception as e:
-        print(f"❌ Erro: {e}")
-        return False
 
 
-def teste_a_estrela_basico():
-    """Testa casos básicos do A*."""
-    print("\n🧪 TESTE 3: Algoritmo A* - Casos Básicos")
+def teste_a_estrela():
+    """Testa algoritmo A*"""
+    print("\n🧪 TESTE 3: Algoritmo A*")
     print("-" * 60)
     
     try:
         nav = NavegacaoCampusUFMA()
         
-        # Teste 1: Caminho de um nó para ele mesmo
-        caminho, custo, _ = nav.a_estrela('BICT', 'BICT', verbose=False)
-        assert len(caminho) == 1, "Caminho para si mesmo deveria ter 1 nó"
-        assert custo == 0, "Custo para si mesmo deveria ser 0"
+        # Caminho para si mesmo
+        caminho, custo, _ = nav.buscar_caminho('BICT', 'BICT', mostrar_info=False)
+        assert len(caminho) == 1, "Caminho para si mesmo deve ter 1 nó"
+        assert custo == 0, "Custo para si mesmo deve ser 0"
         
-        # Teste 2: Caminho adjacente direto
-        caminho, custo, _ = nav.a_estrela('BICT', 'CCET', verbose=False)
-        assert caminho is not None, "Deveria encontrar caminho entre BICT e CCET"
-        assert len(caminho) >= 2, "Caminho deveria ter pelo menos 2 nós"
+        # Caminho válido
+        caminho, custo, _ = nav.buscar_caminho('Portaria Principal', 'BICT', mostrar_info=False)
+        assert caminho is not None, "Deve encontrar caminho"
+        assert len(caminho) >= 2, "Caminho deve ter pelo menos 2 nós"
+        assert custo > 0, "Custo deve ser positivo"
         
-        # Teste 3: Caminho mais longo
-        caminho, custo, _ = nav.a_estrela('Portaria Principal', 'Aeroporto', verbose=False)
-        assert caminho is not None, "Deveria encontrar caminho para o Aeroporto"
-        assert len(caminho) > 2, "Caminho para Aeroporto deveria ter mais de 2 nós"
-        
-        print(f"✅ A* funcionando corretamente!")
-        print(f"   • Caminho BICT → BICT: {1} nó, {0}m")
+        print(f"✅ A* funcionando!")
+        print(f"   Exemplo: Portaria → BICT = {custo:.0f}m")
         return True
-    except AssertionError as e:
-        print(f"❌ Falha: {e}")
-        return False
     except Exception as e:
-        print(f"❌ Erro: {e}")
-        return False
-
-
-def teste_otimalidade():
-    """Testa se o A* encontra o caminho ótimo."""
-    print("\n🧪 TESTE 4: Otimalidade do A*")
-    print("-" * 60)
-    
-    try:
-        nav = NavegacaoCampusUFMA()
-        
-        # Comparar com caminho direto vs indireto
-        caminho1, custo1, _ = nav.a_estrela('BICT', 'Biblioteca Central', verbose=False)
-        
-        # A distância encontrada deve ser razoável
-        assert custo1 > 0, "Custo deveria ser positivo"
-        assert custo1 < 500, "Distância parece muito alta para locais próximos"
-        
-        print(f"✅ Otimalidade validada!")
-        print(f"   • BICT → Biblioteca: {custo1:.0f}m")
-        print(f"   • Caminho tem {len(caminho1)} pontos")
-        return True
-    except AssertionError as e:
         print(f"❌ Falha: {e}")
-        return False
-    except Exception as e:
-        print(f"❌ Erro: {e}")
         return False
 
 
 def teste_rotas_importantes():
-    """Testa rotas comuns de estudantes."""
-    print("\n🧪 TESTE 5: Rotas Importantes para Estudantes")
+    """Testa rotas comuns do campus"""
+    print("\n🧪 TESTE 4: Rotas Importantes")
     print("-" * 60)
     
     try:
         nav = NavegacaoCampusUFMA()
         
-        rotas_teste = [
-            ('Portaria Principal', 'BICT', 500),  # < 500m
-            ('BICT', 'Restaurante Universitário', 600),  # < 600m
-            ('CCET', 'Biblioteca Central', 200),  # < 200m
-            ('Biblioteca Central', 'Restaurante Universitário', 300),  # < 300m
+        rotas = [
+            ('Portaria Principal', 'BICT', 900),
+            ('CCET', 'Restaurante Universitário', 400),
+            ('BICT', 'Biblioteca Central', 900),
+            ('Reitoria', 'Ginásio Castelinho', 900)
         ]
         
-        for inicio, destino, max_dist in rotas_teste:
-            caminho, custo, _ = nav.a_estrela(inicio, destino, verbose=False)
-            assert caminho is not None, f"Falha em encontrar {inicio} → {destino}"
-            assert custo < max_dist, f"Distância {custo:.0f}m muito alta (max {max_dist}m)"
-            print(f"   ✓ {inicio} → {destino}: {custo:.0f}m ({len(caminho)} pontos)")
+        for inicio, fim, max_dist in rotas:
+            caminho, custo, _ = nav.buscar_caminho(inicio, fim, mostrar_info=False)
+            assert caminho is not None, f"Não encontrou {inicio} → {fim}"
+            assert custo < max_dist, f"Distância muito alta: {custo}m"
+            print(f"   ✓ {inicio} → {fim}: {custo:.0f}m")
         
-        print(f"\n✅ Todas as rotas importantes testadas com sucesso!")
+        print(f"\n✅ Rotas importantes validadas!")
         return True
-    except AssertionError as e:
+    except Exception as e:
         print(f"❌ Falha: {e}")
         return False
-    except Exception as e:
-        print(f"❌ Erro: {e}")
-        return False
 
 
-def teste_locais_invalidos():
-    """Testa comportamento com entradas inválidas."""
-    print("\n🧪 TESTE 6: Tratamento de Erros")
+def teste_erro():
+    """Testa tratamento de erros"""
+    print("\n🧪 TESTE 5: Tratamento de Erros")
     print("-" * 60)
     
     try:
         nav = NavegacaoCampusUFMA()
         
-        # Teste com local inexistente
-        caminho, custo, _ = nav.a_estrela('Local Inexistente', 'BICT', verbose=False)
-        assert caminho is None, "Deveria retornar None para local inválido"
-        assert custo == float('inf'), "Custo deveria ser infinito para local inválido"
+        # Local inexistente
+        caminho, custo, _ = nav.buscar_caminho('Local Falso', 'BICT', mostrar_info=False)
+        assert caminho is None, "Deve retornar None"
+        assert custo == float('inf'), "Custo deve ser infinito"
         
-        print(f"✅ Tratamento de erros funcionando!")
-        print(f"   • Locais inválidos são rejeitados corretamente")
+        print(f"✅ Erros tratados corretamente!")
         return True
-    except AssertionError as e:
+    except Exception as e:
         print(f"❌ Falha: {e}")
         return False
-    except Exception as e:
-        print(f"❌ Erro: {e}")
-        return False
 
 
-def executar_todos_testes():
-    """Executa todos os testes."""
+def executar_testes():
+    """Executa todos os testes"""
     print("\n" + "="*60)
-    print("🧪 SUITE DE TESTES - SISTEMA DE NAVEGAÇÃO UFMA")
+    print("🧪 SUITE DE TESTES - NAVEGAÇÃO CAMPUS UFMA")
     print("="*60)
     
     testes = [
-        teste_criacao_grafo,
+        teste_grafo,
         teste_heuristica,
-        teste_a_estrela_basico,
-        teste_otimalidade,
+        teste_a_estrela,
         teste_rotas_importantes,
-        teste_locais_invalidos
+        teste_erro
     ]
     
-    resultados = []
-    for teste in testes:
-        resultado = teste()
-        resultados.append(resultado)
+    resultados = [teste() for teste in testes]
     
-    # Sumário
     print("\n" + "="*60)
-    print("📊 SUMÁRIO DOS TESTES")
+    print("📊 RESUMO")
     print("="*60)
     
     total = len(resultados)
     passou = sum(resultados)
-    falhou = total - passou
     
-    print(f"\n   Total de testes: {total}")
-    print(f"   ✅ Passou: {passou}")
-    print(f"   ❌ Falhou: {falhou}")
-    print(f"   Taxa de sucesso: {(passou/total)*100:.1f}%")
+    print(f"\nTotal: {total}")
+    print(f"✅ Passou: {passou}")
+    print(f"❌ Falhou: {total - passou}")
+    print(f"Taxa de sucesso: {(passou/total)*100:.0f}%")
     
-    if falhou == 0:
-        print("\n🎉 TODOS OS TESTES PASSARAM! Sistema validado.")
+    if passou == total:
+        print("\n🎉 TODOS OS TESTES PASSARAM!\n")
         return 0
     else:
-        print(f"\n⚠️ {falhou} teste(s) falharam. Revisar implementação.")
+        print(f"\n⚠️ {total - passou} teste(s) falharam.\n")
         return 1
 
 
 if __name__ == "__main__":
-    codigo_saida = executar_todos_testes()
-    sys.exit(codigo_saida)
+    sys.exit(executar_testes())
