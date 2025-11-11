@@ -1,146 +1,102 @@
 """
-Exemplo Interativo - Navegação Campus UFMA
-Execute este arquivo para testar diferentes rotas de forma interativa!
+Interface Interativa - Sistema de Navegação Campus UFMA
 """
 
 from navegacao_ufma import NavegacaoCampusUFMA
 
 
-def menu_interativo():
-    """Interface interativa para testar o sistema de navegação."""
+def menu_principal():
+    """Menu interativo para navegação no campus"""
     nav = NavegacaoCampusUFMA()
     
-    print("\n" + "="*70)
-    print("🎓 SISTEMA INTERATIVO DE NAVEGAÇÃO - CAMPUS UFMA")
-    print("="*70 + "\n")
+    print("\n" + "="*60)
+    print("🎓 NAVEGAÇÃO INTERATIVA - CAMPUS UFMA")
+    print("="*60 + "\n")
     
     while True:
-        print("\n📋 MENU PRINCIPAL:")
-        print("1. Listar todos os locais disponíveis")
-        print("2. Encontrar caminho entre dois locais")
-        print("3. Comparar rotas a partir de um local")
-        print("4. Exemplos pré-definidos")
-        print("5. Visualizar mapa completo")
+        print("📋 MENU:")
+        print("1. Listar locais do campus")
+        print("2. Buscar caminho entre dois pontos")
+        print("3. Comparar rotas de um ponto")
+        print("4. Ver exemplos pré-definidos")
         print("0. Sair")
         
-        opcao = input("\nEscolha uma opção: ").strip()
+        opcao = input("\nEscolha: ").strip()
         
         if opcao == "1":
             nav.listar_locais()
         
         elif opcao == "2":
-            print("\n" + "-"*70)
             nav.listar_locais()
-            inicio = input("Digite o local de PARTIDA: ").strip()
-            destino = input("Digite o local de DESTINO: ").strip()
+            inicio = input("📍 Local de PARTIDA: ").strip()
+            fim = input("📍 Local de DESTINO: ").strip()
             
             print("\n🔍 Buscando rota...")
-            caminho, custo, stats = nav.a_estrela(inicio, destino)
+            caminho, custo, _ = nav.buscar_caminho(inicio, fim)
             
             if caminho:
-                print("\n📊 Deseja visualizar o mapa desta rota? (s/n): ", end="")
-                if input().strip().lower() == 's':
-                    nav.visualizar_mapa(caminho, salvar=False)
+                gerar = input("\n📊 Gerar mapa? (s/n): ").strip().lower()
+                if gerar == 's':
+                    nav.desenhar_mapa(caminho)
+                    print("Confira o mapa na pasta outputs/")
         
         elif opcao == "3":
-            print("\n" + "-"*70)
             nav.listar_locais()
-            inicio = input("Digite o local de PARTIDA: ").strip()
+            origem = input("📍 Local de PARTIDA: ").strip()
             
-            print("\nDigite os DESTINOS para comparar (separados por vírgula):")
-            print("Exemplo: CCET, Biblioteca Central, RU")
+            print("\nDigite os DESTINOS separados por vírgula:")
             destinos_str = input("Destinos: ").strip()
             destinos = [d.strip() for d in destinos_str.split(',')]
             
-            nav.comparar_rotas(inicio, destinos)
+            nav.comparar_rotas(origem, destinos)
         
         elif opcao == "4":
-            exemplos_predefinidos(nav)
-        
-        elif opcao == "5":
-            print("\n🗺️ Gerando visualização do mapa completo...")
-            nav.visualizar_mapa(salvar=False)
+            executar_exemplos(nav)
         
         elif opcao == "0":
-            print("\n👋 Obrigado por usar o sistema! Até logo!\n")
+            print("\n👋 Até logo!\n")
             break
         
         else:
-            print("\n❌ Opção inválida! Tente novamente.")
+            print("\n❌ Opção inválida!\n")
 
 
-def exemplos_predefinidos(nav):
-    """Mostra exemplos pré-definidos de uso."""
-    print("\n" + "="*70)
+def executar_exemplos(nav):
+    """Executa exemplos pré-definidos"""
+    print("\n" + "="*60)
     print("📚 EXEMPLOS PRÉ-DEFINIDOS")
-    print("="*70)
+    print("="*60 + "\n")
     
     exemplos = {
-        "1": {
-            "titulo": "Primeira aula do dia",
-            "inicio": "Portaria Principal",
-            "destino": "BICT",
-            "descricao": "Chegando na UFMA pela manhã"
-        },
-        "2": {
-            "titulo": "Hora do almoço",
-            "inicio": "CCET",
-            "destino": "Restaurante Universitário",
-            "descricao": "Saindo da aula para almoçar no RU"
-        },
-        "3": {
-            "titulo": "Estudar para a prova",
-            "inicio": "BICT",
-            "destino": "Biblioteca Central",
-            "descricao": "Indo estudar na biblioteca"
-        },
-        "4": {
-            "titulo": "Atividade física",
-            "inicio": "Restaurante Universitário",
-            "destino": "Ginásio Castelinho",
-            "descricao": "Após o almoço, indo jogar basquete"
-        },
-        "5": {
-            "titulo": "Final de semana na praia",
-            "inicio": "BICT",
-            "destino": "Praia do Calhau",
-            "descricao": "Saindo da UFMA para curtir a praia"
-        },
-        "6": {
-            "titulo": "Viagem de férias",
-            "inicio": "Portaria Principal",
-            "destino": "Aeroporto",
-            "descricao": "Indo pegar um voo nas férias"
-        }
+        '1': ('Portaria Principal', 'BICT', 'Chegando para aula'),
+        '2': ('CCET', 'Restaurante Universitário', 'Indo almoçar'),
+        '3': ('BICT', 'Biblioteca Central', 'Estudar na biblioteca'),
+        '4': ('Restaurante Universitário', 'Ginásio Castelinho', 'Ir treinar'),
+        '5': ('Portaria Principal', 'Portaria Fundos', 'Atravessar o campus')
     }
     
-    print("\nEscolha um exemplo:")
-    for key, ex in exemplos.items():
-        print(f"{key}. {ex['titulo']} ({ex['inicio']} → {ex['destino']})")
-    print("0. Voltar ao menu principal")
+    for key, (inicio, fim, desc) in exemplos.items():
+        print(f"{key}. {desc} ({inicio} → {fim})")
+    print("0. Voltar")
     
-    escolha = input("\nOpção: ").strip()
+    escolha = input("\nEscolha: ").strip()
     
     if escolha in exemplos:
-        ex = exemplos[escolha]
-        print(f"\n📖 {ex['titulo']}")
-        print(f"💬 {ex['descricao']}")
-        print(f"🚶 {ex['inicio']} → {ex['destino']}\n")
-        
-        caminho, custo, stats = nav.a_estrela(ex['inicio'], ex['destino'])
+        inicio, fim, desc = exemplos[escolha]
+        print(f"\n{desc}")
+        caminho, custo, _ = nav.buscar_caminho(inicio, fim)
         
         if caminho:
-            print("\n📊 Deseja visualizar o mapa? (s/n): ", end="")
-            if input().strip().lower() == 's':
-                nav.visualizar_mapa(caminho, salvar=False)
-    elif escolha != "0":
-        print("\n❌ Opção inválida!")
+            gerar = input("\n📊 Gerar mapa? (s/n): ").strip().lower()
+            if gerar == 's':
+                nav.desenhar_mapa(caminho)
+                print("Mapa salvo na pasta outputs/")
 
 
 if __name__ == "__main__":
     try:
-        menu_interativo()
+        menu_principal()
     except KeyboardInterrupt:
-        print("\n\n⚠️ Programa interrompido pelo usuário.")
+        print("\n\n⚠️ Programa interrompido.\n")
     except Exception as e:
-        print(f"\n❌ Erro: {e}")
+        print(f"\n❌ Erro: {e}\n")
