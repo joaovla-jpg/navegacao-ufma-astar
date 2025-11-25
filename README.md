@@ -228,7 +228,7 @@ O A* garante encontrar o caminho ótimo porque:
 
 ## 🎥 Vídeo Demonstrativo
 
-[[Link para vídeo no YouTube - até 5 minutos](https://drive.google.com/file/d/1AMO-OFSMPanJDuAHknN17KTDqJm-G-Vu/view?usp=sharing)]
+[[Link para vídeo no Drive ](https://drive.google.com/file/d/1AMO-OFSMPanJDuAHknN17KTDqJm-G-Vu/view?usp=sharing)]
 
 ### Conteúdo do Vídeo
 1. Apresentação do problema de navegação no campus
